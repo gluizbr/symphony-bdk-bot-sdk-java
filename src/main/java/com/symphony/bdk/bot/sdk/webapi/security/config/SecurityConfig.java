@@ -71,12 +71,12 @@ public class SecurityConfig {
   }
 
   @Bean
-  public FilterRegistrationBean<JwtCookieFilter> jwtCookieFilter(ConfigClient configClient) {
+  @ConditionalOnProperty(prefix = "jwt-cookie", name = "enable")
+  public FilterRegistrationBean<JwtCookieFilter> jwtCookieFilter(Environment env, ConfigClient configClient) {
     FilterRegistrationBean<JwtCookieFilter> registrationBean = new FilterRegistrationBean<>();
     registrationBean.setFilter(new JwtCookieFilter());
     registrationBean.addUrlPatterns(configClient.getExtAppAuthPath() + "*");
     registrationBean.setOrder(1);
-
     return registrationBean;
   }
 
